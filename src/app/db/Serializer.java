@@ -1,31 +1,32 @@
-package app.utils;
+package app.db;
 
 import java.io.*;
 import java.util.List;
-import java.util.ArrayList;
+
+import app.interfaces.EntityStorable;
 
 /* Note: relative file path begins at the main folder of restaurant-project, not the scope of this file itself */
 
 public class Serializer {
-  public static List readSerializedObject(String filename) {
-    List list;
+  public static List<EntityStorable> readSerializedObject(String filename) {
+    List<EntityStorable> list;
     try {
       FileInputStream fis = new FileInputStream(filename);
       ObjectInputStream ois = new ObjectInputStream(fis);
-      list = (ArrayList) ois.readObject();
+      list = (List<EntityStorable>) ois.readObject();
       ois.close();
       return list;
     } catch (IOException e) {
-      System.out.println("IOException: " + e.getMessage());
+      System.out.println("Serializer IOException: " + e.getMessage());
       e.printStackTrace();
     } catch (ClassNotFoundException e) {
-      System.out.println("ClassNotFoundException: " + e.getMessage());
+      System.out.println("Serializer ClassNotFoundException: " + e.getMessage());
       e.printStackTrace();
     }
     return null;
   }
 
-  public static void writeSerializedObject(String filename, List list) {
+  public static void writeSerializedObject(String filename, List<EntityStorable> list) {
     try {
       FileOutputStream fos = new FileOutputStream(filename);
       ObjectOutputStream oos = new ObjectOutputStream(fos);
