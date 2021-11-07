@@ -1,6 +1,7 @@
 package app.controllers;
 
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import app.RestaurantApp;
 import app.db.Data;
@@ -17,12 +18,16 @@ public abstract class Controller {
   }
 
   public void saveAll() { data.saveAll(); }
+  public void printAll() { data.printAll(); }
+  public EntityStorable getEntity(int index) { return data.getList().get(index); }
+  public TreeMap<Integer, String> getChoiceMap() { return data.getChoiceMap(); }
 
-  public void create() {
+  public EntityStorable create() {
     // Ask what entity to add, enter the attributes too, return the entity to be stored
     System.out.println("Creating new " + entity_name + " ...");
     EntityStorable entity = entityCreator();
     data.add(entity);
+    return entity;
   }
 
   public void delete() {

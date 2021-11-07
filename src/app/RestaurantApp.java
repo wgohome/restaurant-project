@@ -5,13 +5,13 @@ import java.util.TreeMap;
 
 import app.controllers.CustomerController;
 import app.controllers.MenuItemController;
+import app.controllers.ReservationController;
 import app.controllers.StaffController;
 import app.utilities.ChoicePicker;
 
 public class RestaurantApp {
   /* Use a single scanner across the app to prevent accidentally closing System.in input stream */
   public static final Scanner sc = new Scanner(System.in);
-
 
   public static void main(String[] args) {
     int choice = -1;
@@ -21,8 +21,9 @@ public class RestaurantApp {
     StaffController staffControl = new StaffController();
     MenuItemController itemControl = new MenuItemController();
     CustomerController customerControl = new CustomerController();
+    ReservationController reservationControl = new ReservationController(customerControl, staffControl.getCurStaff());
 
-    //
+    // Main menu
     String prompt = "Which section do you want to go to? ";
     TreeMap<Integer, String> options = new TreeMap<Integer, String>();
     options.put(1, "Menu Items");
@@ -49,6 +50,7 @@ public class RestaurantApp {
         break;
       case 4:
         System.out.println("Entering option 4");
+        reservationControl.mainOptions();
         break;
       case 5:
         System.out.println("Entering option 5");
@@ -73,6 +75,7 @@ public class RestaurantApp {
     staffControl.saveAll();
     itemControl.saveAll();
     customerControl.saveAll();
+    reservationControl.saveAll();
     sc.close();
   }
 }

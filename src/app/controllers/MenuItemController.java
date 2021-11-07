@@ -18,6 +18,7 @@ public class MenuItemController extends Controller {
     String name;
     double price;
     ItemType type;
+
     System.out.println("Enter item name: ");
     name = sc.nextLine();
 
