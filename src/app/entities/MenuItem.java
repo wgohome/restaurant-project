@@ -18,6 +18,6 @@ public class MenuItem implements EntityStorable, Orderable {
 
   public String getName() { return name; }
   public double getPrice() { return price; }
-  public String getDesc() { return null; }
+  public String getDesc() { return String.format("$ %.2f", price); }
   public String getType() { return type.name(); }
 }

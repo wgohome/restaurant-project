@@ -28,14 +28,13 @@ public class RestaurantApp {
     options.put(3, "Orders");
     options.put(4, "Reservations");
     options.put(5, "Invoice");
-    options.put(6, "Quit");
     options.put(7, "Edit Staff");
+    options.put(9, "Quit");
     ChoicePicker picker = new ChoicePicker(prompt, options);
-    while (choice != 6) {
+    while (choice != 9) {
       choice = picker.run();
       switch (choice) {
       case 1:
-        System.out.println("Entering option 1");
         itemControl.mainOptions();
         break;
       case 2:
@@ -50,12 +49,12 @@ public class RestaurantApp {
       case 5:
         System.out.println("Entering option 5");
         break;
-      case 6:
-        System.out.println("Exiting the app ...");
-        break;
       case 7:
         System.out.println("Edit the staff ...");
         staffControl.mainOptions();
+        break;
+      case 9:
+        System.out.println("Exiting the app ...");
         break;
       default:
         break;

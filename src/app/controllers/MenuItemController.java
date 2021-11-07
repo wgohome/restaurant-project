@@ -11,13 +11,13 @@ import app.utilities.ChoicePicker;
 public class MenuItemController extends Controller {
   public MenuItemController() {
     super(new MenuItemData());
+    entity_name = "Menu Item";
   }
 
-  protected EntityStorable createCaller() {
+  protected EntityStorable entityCreator() {
     String name;
     double price;
     ItemType type;
-    System.out.println("Creating new Menu Item ...");
     System.out.println("Enter item name: ");
     name = sc.nextLine();
 
@@ -33,10 +33,12 @@ public class MenuItemController extends Controller {
     return (EntityStorable) (new MenuItem(name, price, type));
   }
 
-  protected int deleteChoicePicker() {
-    ChoicePicker delPicker = new ChoicePicker("Which Staff do you want to delete? ", data.getChoiceMap());
-    return delPicker.run(); /* Returns choice number */
-    /* Note: choice starts from 1, index start from 0 */
+  protected void printCurrentEntity(EntityStorable entity) {
+    MenuItem item = (MenuItem) entity; /* TODO: type check, error throw */
+    System.out.println("The current attributes for this " + entity_name + " are: ");
+    System.out.println("Name: " + item.getName());
+    System.out.println("Price: " + item.getPrice());
+    System.out.println("Type: " + item.getType());
   }
 
   public void mainOptions() {
@@ -45,6 +47,7 @@ public class MenuItemController extends Controller {
     options.put(1, "List all Menu Items");
     options.put(2, "Add new Menu Item");
     options.put(3, "Remove a Menu Item");
+    options.put(4, "Edit a Menu Item");
     options.put(9, "Exit - Back to main menu");
     ChoicePicker mainPicker = new ChoicePicker("This is the Menu Items menu, what would you like to do? ", options);
     while (choice != 9) {
@@ -58,6 +61,9 @@ public class MenuItemController extends Controller {
         break;
       case 3:
         delete();
+        break;
+      case 4:
+        edit();
         break;
       case 9:
         System.out.println("Going back to the main menu ... ");

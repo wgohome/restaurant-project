@@ -5,10 +5,12 @@ import java.util.Scanner;
 import app.RestaurantApp;
 import app.db.Data;
 import app.interfaces.EntityStorable;
+import app.utilities.ChoicePicker;
 
 public abstract class Controller {
   protected static Scanner sc = RestaurantApp.sc;
   protected Data data;
+  protected String entity_name;
 
   public Controller(Data dataIn) {
     data = dataIn;
@@ -17,19 +19,39 @@ public abstract class Controller {
   public void saveAll() { data.saveAll(); }
 
   public void create() {
-    // Ask what entity to add, enter the attributes too
-    EntityStorable entity = createCaller();
+    // Ask what entity to add, enter the attributes too, return the entity to be stored
+    System.out.println("Creating new " + entity_name + " ...");
+    EntityStorable entity = entityCreator();
     data.add(entity);
   }
 
   public void delete() {
-    // Ask what entitiy to remove
-    int choice = deleteChoicePicker();
+    // Ask what entitiy to remove, from the EntityData's List
+    int choice = EntityIntChoicePicker("Which " + entity_name + " do you want to delete? ");
     data.remove(choice - 1);
     /* Note: choice starts from 1, index start from 0 */
   }
 
-  protected abstract EntityStorable createCaller();
-  protected abstract int deleteChoicePicker();
+  public void edit() {
+    // Ask which entity to edit
+    int choice = EntityIntChoicePicker("Which " + entity_name + " do you want to edit? ");
+    // Show what the current fields are
+    printCurrentEntity(data.getList().get(choice - 1));
+    // Ask what to edit each field of the entity to, and create a new Entity instance to return
+    System.out.println("Edit: Fill up the fields for " + entity_name + " ...");
+    EntityStorable entity = entityCreator();
+    // update in the dataclass
+    data.update(choice - 1, entity);
+  }
+
+  protected abstract EntityStorable entityCreator();
+  protected abstract void printCurrentEntity(EntityStorable entity);
+
+  protected int EntityIntChoicePicker(String prompt) {
+    ChoicePicker delPicker = new ChoicePicker(prompt, data.getChoiceMap());
+    return delPicker.run(); /* Returns choice number */
+    /* Note: choice starts from 1, index start from 0 */
+  }
+
   public abstract void mainOptions();
 }

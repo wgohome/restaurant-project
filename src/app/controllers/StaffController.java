@@ -15,6 +15,7 @@ public class StaffController extends Controller {
     super(new StaffData());
     /* Sets the protected attributes: data and sc */
     staffSelector();
+    entity_name = "Staff";
   }
 
   public Staff getCurStaff() { return curStaff; }
@@ -33,11 +34,11 @@ public class StaffController extends Controller {
     System.out.println("Hello " + curStaff.getName() + "!");
   }
 
-  protected EntityStorable createCaller() {
+  protected EntityStorable entityCreator() {
     int staffId;
     String name;
     Title jobTitle;
-    System.out.println("Creating new staff ...");
+
     System.out.println("Enter staff name: ");
     name = sc.nextLine();
 
@@ -56,12 +57,12 @@ public class StaffController extends Controller {
     return (EntityStorable)(new Staff(staffId, name, jobTitle));
   }
 
-  protected int deleteChoicePicker() {
-    ChoicePicker delPicker = new ChoicePicker(
-      "Which Staff do you want to delete? ", data.getChoiceMap()
-    );
-    return delPicker.run(); /* Returns choice number */
-    /* Note: choice starts from 1, index start from 0 */
+  protected void printCurrentEntity(EntityStorable entity) {
+    Staff staff = (Staff) entity; /* TODO: type check, error throw */
+    System.out.println("The current attributes for this " + entity_name + " are: ");
+    System.out.println("Name: " + staff.getName());
+    System.out.println("Staff ID: " + staff.getId());
+    System.out.println("Job Title: " + staff.getDesc());
   }
 
   public void mainOptions() {

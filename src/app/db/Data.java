@@ -90,4 +90,12 @@ public abstract class Data {
     }
     return e;
   }
+
+  public void update(int index, EntityStorable updatedEntity) {
+    try {
+      /* EntityStorable entity =  */list.set(index, updatedEntity);
+    } catch (Exception e) {
+      System.out.println("Failed to update entity. ");
+    }
+  }
 }
