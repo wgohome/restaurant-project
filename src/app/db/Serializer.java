@@ -22,6 +22,9 @@ public class Serializer {
     } catch (ClassNotFoundException e) {
       System.out.println("Serializer ClassNotFoundException: " + e.getMessage());
       e.printStackTrace();
+    } catch (ClassCastException e) {
+      System.out.println("Serializer ClassCastException: " + e.getMessage());
+      e.printStackTrace();
     }
     return null;
   }

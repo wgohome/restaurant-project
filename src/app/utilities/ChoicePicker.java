@@ -16,11 +16,6 @@ public class ChoicePicker {
     options = optionsIn;
   }
 
-  // public ChoicePicker(String promptIn, Data data) {
-  //   prompt = promptIn;
-  //   // TODO: handle data into treemap
-  // }
-
   public int run() {
     int choice = -1;
 

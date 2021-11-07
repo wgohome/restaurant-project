@@ -1,11 +1,10 @@
 package app;
 
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import app.controllers.MenuItemController;
 import app.controllers.StaffController;
-import app.entities.*;
 import app.utilities.ChoicePicker;
 
 public class RestaurantApp {
@@ -17,8 +16,9 @@ public class RestaurantApp {
     int choice = -1;
 
     System.out.println("Welcome to the restaurant POS Application ");
-    // Select staff operating the POS
+    // Initialize controllers
     StaffController staffControl = new StaffController();
+    MenuItemController itemControl = new MenuItemController();
 
     //
     String prompt = "Which section do you want to go to? ";
@@ -36,6 +36,7 @@ public class RestaurantApp {
       switch (choice) {
       case 1:
         System.out.println("Entering option 1");
+        itemControl.mainOptions();
         break;
       case 2:
         System.out.println("Entering option 2");
@@ -61,8 +62,9 @@ public class RestaurantApp {
       }
     }
 
-    // TODO: save all ephemeral data to stores
+    // Save all ephemeral data to stores
     staffControl.saveAll();
+    itemControl.saveAll();
     sc.close();
   }
 }

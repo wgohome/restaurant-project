@@ -14,26 +14,21 @@ public class StaffController extends Controller {
   public StaffController() {
     super(new StaffData());
     /* Sets the protected attributes: data and sc */
-    staffSelection();
+    staffSelector();
   }
 
   public Staff getCurStaff() { return curStaff; }
   /* private because should only set staff by staffSelection() */
   private void setCurStaff(Staff s) { curStaff = s; }
 
-  public void staffSelection() {
+  protected void staffSelector() {
     int choice;
 
-    // TODO: replace with ChoicePicker
-    data.printAll();
-    System.out.println("Which staff are you? Enter the corresponding number: ");
-    choice = sc.nextInt();
-    sc.nextLine(); /* flush buffer */
-    while (choice < 1 || choice > data.size()) {
-      System.out.println("Please enter a valid number from the choices above: ");
-      choice = sc.nextInt();
-      sc.nextLine(); /* flush buffer */
-    }
+    ChoicePicker picker = new ChoicePicker(
+      "Which staff are you? Enter the corresponding number: ",
+      data.getChoiceMap()
+    );
+    choice = picker.run();
     setCurStaff((Staff) data.getList().get(choice - 1));
     System.out.println("Hello " + curStaff.getName() + "!");
   }
@@ -75,12 +70,13 @@ public class StaffController extends Controller {
     options.put(1, "List all Staff");
     options.put(2, "Add new Staff");
     options.put(3, "Remove a Staff");
-    options.put(4, "Exit - Back to main menu");
+    options.put(4, "Change current Staff");
+    options.put(9, "Exit - Back to main menu");
     ChoicePicker mainPicker = new ChoicePicker(
       "This is the Staff menu, what would you like to do? ",
       options
     );
-    while (choice != 4) {
+    while (choice != 9) {
       choice = mainPicker.run();
       switch (choice) {
         case 1:
@@ -93,6 +89,9 @@ public class StaffController extends Controller {
           delete();
           break;
         case 4:
+          staffSelector();
+          break;
+        case 9:
           System.out.println("Going back to the main menu ... ");
           break;
         default:
