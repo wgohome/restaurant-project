@@ -34,7 +34,6 @@ public class ReservationController extends Controller {
     choice = picker.run();
     if (choice == 1) {
       /* Pick from existing customers */
-      cusControl.printAll();
       options = cusControl.getChoiceMap();
       ChoicePicker cusPicker = new ChoicePicker(
         "Which customer is this reservation for?",
