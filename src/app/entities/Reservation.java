@@ -8,7 +8,7 @@ public class Reservation extends Chopable implements EntityStorable {
   }
 
   public String getName() {
-    return "Reservation No. ";
+    return "Reservation for " + customer.getName();
   }
 
   public String getDesc() {
