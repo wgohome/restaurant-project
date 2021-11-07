@@ -1,4 +1,4 @@
 data/*
 !data/.keep
-bin/
+bin/*
 !bin/.keep
