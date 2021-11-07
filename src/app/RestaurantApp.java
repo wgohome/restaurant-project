@@ -3,6 +3,7 @@ package app;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import app.controllers.CustomerController;
 import app.controllers.MenuItemController;
 import app.controllers.StaffController;
 import app.utilities.ChoicePicker;
@@ -19,16 +20,19 @@ public class RestaurantApp {
     // Initialize controllers
     StaffController staffControl = new StaffController();
     MenuItemController itemControl = new MenuItemController();
+    CustomerController customerControl = new CustomerController();
 
     //
     String prompt = "Which section do you want to go to? ";
     TreeMap<Integer, String> options = new TreeMap<Integer, String>();
-    options.put(1, "Menu Item");
+    options.put(1, "Menu Items");
     options.put(2, "Promotional Sets");
     options.put(3, "Orders");
     options.put(4, "Reservations");
     options.put(5, "Invoice");
-    options.put(7, "Edit Staff");
+    options.put(6, "Table");
+    options.put(7, "Customer Management");
+    options.put(8, "Staff Management");
     options.put(9, "Quit");
     ChoicePicker picker = new ChoicePicker(prompt, options);
     while (choice != 9) {
@@ -50,7 +54,11 @@ public class RestaurantApp {
         System.out.println("Entering option 5");
         break;
       case 7:
-        System.out.println("Edit the staff ...");
+        // System.out.println("Edit the customers ...");
+        customerControl.mainOptions();
+        break;
+      case 8:
+        // System.out.println("Edit the staff ...");
         staffControl.mainOptions();
         break;
       case 9:
@@ -64,6 +72,7 @@ public class RestaurantApp {
     // Save all ephemeral data to stores
     staffControl.saveAll();
     itemControl.saveAll();
+    customerControl.saveAll();
     sc.close();
   }
 }
