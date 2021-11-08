@@ -9,11 +9,10 @@ import app.interfaces.EntityStorable;
 
 public class Serializer {
   public static List<EntityStorable> readSerializedObject(String filename) {
-    List<EntityStorable> list;
     try {
       FileInputStream fis = new FileInputStream(filename);
       ObjectInputStream ois = new ObjectInputStream(fis);
-      list = (List<EntityStorable>) ois.readObject();
+      @SuppressWarnings("unchecked") List<EntityStorable> list = (List<EntityStorable>) ois.readObject();
       ois.close();
       return list;
     } catch (IOException e) {
