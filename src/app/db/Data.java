@@ -97,12 +97,18 @@ public abstract class Data {
   }
 
   /* To be called from edit() in Controller class */
-  public void update(int index, EntityStorable updatedEntity) {
-    try {
-      /* EntityStorable entity =  */list.set(index, updatedEntity);
-    } catch (Exception e) {
-      System.out.println("Failed to update entity. ");
+  public EntityStorable update(int index, EntityStorable updatedEntity) {
+    EntityStorable oldEntity = list.set(index, updatedEntity);
+    if (oldEntity != null) {
+      System.out.println(
+        "Replaced old " + oldEntity.getName() +
+        " entity with new " + updatedEntity.getName()
+      );
+      afterRemove(oldEntity);
+    } else {
+      System.out.println("Failed to replace old entity with new " + updatedEntity.getName());
     }
+    return oldEntity;
   }
 
   /* Not used in the app yet */

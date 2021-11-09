@@ -19,18 +19,18 @@ public abstract class Controller {
   }
 
   public String getEntityName() { return entityName; }
-  protected Data getData() { return data; }
+  public Data getData() { return data; }
   /* No setters as they are not meant to be changed
     in the lifetime of the object */
 
 
   /* Wrappers to Data subclasses' methods */
-  public void saveAll() { data.saveAll(); }
-  public void printAll() { data.printAll(); }
+  public void saveAll() { getData().saveAll(); }
+  public void printAll() { getData().printAll(); }
   public EntityStorable getEntity(int index)
-    { return data.getList().get(index); }
+    { return getData().getList().get(index); }
   public TreeMap<Integer, String> getChoiceMap()
-    { return data.getChoiceMap(); }
+    { return getData().getChoiceMap(); }
 
 
   /* Implementation for the sub menu, i.e. the CRUD++ actions */
@@ -45,7 +45,7 @@ public abstract class Controller {
     EntityStorable entity = entityCreator();
     if (entity != null) {
       /* EntityData class to store the entity in their List */
-      data.add(entity);
+      getData().add(entity);
       return entity;
     } else {
       System.out.println("Failed to create " + entityName + "!");
@@ -59,7 +59,7 @@ public abstract class Controller {
     /* Ask what entitiy to remove, choose from the EntityData's List */
     int choice = entityIntChoicePicker("Which " + entityName + " do you want to delete? ");
     /* EntityData class to remove the entity in their List */
-    data.remove(choice - 1);
+    getData().remove(choice - 1);
       /* Note: choice starts from 1, index start from 0 */
   }
 
@@ -69,13 +69,13 @@ public abstract class Controller {
     /* Ask what entitiy to edit, from the EntityData's List */
     int choice = entityIntChoicePicker("Which " + entityName + " do you want to edit? ");
     /* Show what the current fields are */
-    printEntityAttrs(data.getList().get(choice - 1));
-    /* Ask what to edit each field of the entity to,
-      and create a new Entity instance to return */
-    System.out.println("Edit: Fill up the fields for " + entityName + " ...");
+    printEntityAttrs(getData().getList().get(choice - 1));
+    /* Create a new Entity instance */
+    System.out.println("Edit: Fill up the fields for updated " + entityName + " ...");
     EntityStorable entity = entityCreator();
     /* Replace the old entity with new entity at the appropriate index */
-    data.update(choice - 1, entity);
+    getData().update(choice - 1, entity);
+      /* side effects of afterRemove() will be called in Data class */
   }
 
 
@@ -94,7 +94,7 @@ public abstract class Controller {
   /* Prints the list of all instances of this Entity,
     ask the user to select one, returns the choice number */
   protected int entityIntChoicePicker(String prompt) {
-    ChoicePicker delPicker = new ChoicePicker(prompt, data.getChoiceMap());
+    ChoicePicker delPicker = new ChoicePicker(prompt, getData().getChoiceMap());
     return delPicker.run();
     /* Note: choice starts from 1, index start from 0 */
   }

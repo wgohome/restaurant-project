@@ -3,6 +3,7 @@ package app;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import app.controllers.Controller;
 import app.controllers.CustomerController;
 import app.controllers.MenuItemController;
 import app.controllers.ReservationController;
@@ -37,8 +38,9 @@ public class RestaurantApp {
     options.put(7, "Customer Management");
     options.put(8, "Staff Management");
     options.put(9, "Quit and save data");
+    options.put(100, "Quit and Delete data files (clear DB)");
     ChoicePicker picker = new ChoicePicker(prompt, options);
-    while (choice != 9) {
+    while (choice != 9 && choice != 100) {
       choice = picker.run();
       switch (choice) {
       case 1:
@@ -67,18 +69,31 @@ public class RestaurantApp {
         break;
       case 9:
         System.out.println("Exiting the app ...");
+        // Save all ephemeral data to stores
+        staffControl.saveAll();
+        itemControl.saveAll();
+        customerControl.saveAll();
+        tableControl.saveAll();
+        reservationControl.saveAll();
+        break;
+      case 100:
+        /* For development purposes */
+        System.out.println("Deleting files ...");
+        deleteFiles(staffControl);
+        deleteFiles(itemControl);
+        deleteFiles(customerControl);
+        deleteFiles(tableControl);
+        deleteFiles(reservationControl);
         break;
       default:
         break;
       }
     }
-
-    // Save all ephemeral data to stores
-    staffControl.saveAll();
-    itemControl.saveAll();
-    customerControl.saveAll();
-    tableControl.saveAll();
-    reservationControl.saveAll();
     sc.close();
+  }
+
+  private static void deleteFiles(Controller c) {
+    /* For development purposes */
+    c.getData().deleteDataFile();
   }
 }

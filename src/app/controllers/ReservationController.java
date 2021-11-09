@@ -124,7 +124,6 @@ public class ReservationController extends Controller {
         break;
       case 4:
         edit();
-        // TODO: edit does not make table occupied, but does free up the previous table (perhaps from the freeTable general function since it is no longer attached to a Bookable)
         break;
       case 9:
         System.out.println("Going back to the main menu ... ");
