@@ -13,13 +13,25 @@ public class Customer implements EntityStorable {
     this.membership = mem;
   }
 
-  public String getContact() { return contact; }
-  public Boolean getMembership() { return membership; }
+  @Override
+  public String getName() { return name; }
   public void setName(String name) { this.name = name; }
+
+  public String getContact() { return contact; }
   public void setContact(String contact) { this.contact = contact; }
+
+  public Boolean getMembership() { return membership; }
   public void setMembership(Boolean bool) { this.membership = bool; }
 
-  /* Realising methods of EntityStorable interface */
-  public String getName() { return name; }
-  public String getDesc() { return contact + (membership ? " (Member)" : ""); }
+  @Override
+  public String getDesc() {
+    return contact + (membership ? " (Member)" : "");
+  }
+
+  @Override
+  public String getAttrsString() {
+    return "Name: " + getName() +
+      "\nContact: " + getContact() +
+      "\nMember: " + getMembership();
+  }
 }

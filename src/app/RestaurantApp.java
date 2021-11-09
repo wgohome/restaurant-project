@@ -7,6 +7,7 @@ import app.controllers.CustomerController;
 import app.controllers.MenuItemController;
 import app.controllers.ReservationController;
 import app.controllers.StaffController;
+import app.controllers.TableController;
 import app.utilities.ChoicePicker;
 
 public class RestaurantApp {
@@ -21,7 +22,8 @@ public class RestaurantApp {
     StaffController staffControl = new StaffController();
     MenuItemController itemControl = new MenuItemController();
     CustomerController customerControl = new CustomerController();
-    ReservationController reservationControl = new ReservationController(customerControl, staffControl.getCurStaff());
+    TableController tableControl = new TableController();
+    ReservationController reservationControl = new ReservationController(customerControl, tableControl, staffControl);
 
     // Main menu
     String prompt = "Which section do you want to go to? ";
@@ -30,11 +32,11 @@ public class RestaurantApp {
     options.put(2, "Promotional Sets");
     options.put(3, "Orders");
     options.put(4, "Reservations");
-    options.put(5, "Invoice");
-    options.put(6, "Table");
+    options.put(5, "Invoices");
+    options.put(6, "Table Management");
     options.put(7, "Customer Management");
     options.put(8, "Staff Management");
-    options.put(9, "Quit");
+    options.put(9, "Quit and save data");
     ChoicePicker picker = new ChoicePicker(prompt, options);
     while (choice != 9) {
       choice = picker.run();
@@ -49,18 +51,18 @@ public class RestaurantApp {
         System.out.println("Entering option 3");
         break;
       case 4:
-        System.out.println("Entering option 4");
         reservationControl.mainOptions();
         break;
       case 5:
         System.out.println("Entering option 5");
         break;
+      case 6:
+        tableControl.mainOptions();
+        break;
       case 7:
-        // System.out.println("Edit the customers ...");
         customerControl.mainOptions();
         break;
       case 8:
-        // System.out.println("Edit the staff ...");
         staffControl.mainOptions();
         break;
       case 9:
@@ -75,6 +77,7 @@ public class RestaurantApp {
     staffControl.saveAll();
     itemControl.saveAll();
     customerControl.saveAll();
+    tableControl.saveAll();
     reservationControl.saveAll();
     sc.close();
   }

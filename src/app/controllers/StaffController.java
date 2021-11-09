@@ -15,7 +15,7 @@ public class StaffController extends Controller {
     super(new StaffData());
     /* Sets the protected attributes: data and sc */
     staffSelector();
-    entity_name = "Staff";
+    entityName = "Staff";
   }
 
   public Staff getCurStaff() { return curStaff; }
@@ -27,10 +27,10 @@ public class StaffController extends Controller {
 
     ChoicePicker picker = new ChoicePicker(
       "Which staff are you? Enter the corresponding number: ",
-      data.getChoiceMap()
+      getData().getChoiceMap()
     );
     choice = picker.run();
-    setCurStaff((Staff) data.getList().get(choice - 1));
+    setCurStaff((Staff) getData().getList().get(choice - 1));
     System.out.println("Hello " + curStaff.getName() + "!");
   }
 
@@ -57,14 +57,6 @@ public class StaffController extends Controller {
     return (EntityStorable)(new Staff(staffId, name, jobTitle));
   }
 
-  protected void printCurrentEntity(EntityStorable entity) {
-    Staff staff = (Staff) entity; /* TODO: type check, error throw */
-    System.out.println("The current attributes for this " + entity_name + " are: ");
-    System.out.println("Name: " + staff.getName());
-    System.out.println("Staff ID: " + staff.getId());
-    System.out.println("Job Title: " + staff.getDesc());
-  }
-
   public void mainOptions() {
     int choice = -1;
     TreeMap<Integer, String> options = new TreeMap<Integer, String>();
@@ -81,7 +73,7 @@ public class StaffController extends Controller {
       choice = mainPicker.run();
       switch (choice) {
         case 1:
-          data.printAll();
+          printAll();
           break;
         case 2:
           create();

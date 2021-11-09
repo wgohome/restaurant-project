@@ -3,6 +3,7 @@ package app.db;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.entities.Reservation;
 import app.interfaces.EntityStorable;
 
 public class ReservationData extends Data {
@@ -15,5 +16,12 @@ public class ReservationData extends Data {
     // reservations.add(s1, c1);
     /* Start with no reservation */
     return reservations;
+  }
+
+  @Override
+  protected void afterRemove(EntityStorable entity) {
+    /* Free the table */
+    Reservation resv = (Reservation) entity;
+    resv.getTable().freeTable();
   }
 }

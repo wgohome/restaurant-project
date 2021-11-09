@@ -10,9 +10,10 @@ import app.utilities.ChoicePicker;
 public class CustomerController extends Controller {
   public CustomerController() {
     super(new CustomerData());
-    entity_name = "Customer";
+    entityName = "Customer";
   }
 
+  @Override
   protected EntityStorable entityCreator() {
     String name;
     String contact;
@@ -33,14 +34,7 @@ public class CustomerController extends Controller {
     return (EntityStorable) (new Customer(name, contact, membership));
   }
 
-  protected void printCurrentEntity(EntityStorable entity) {
-    Customer item = (Customer) entity; /* TODO: type check, error throw */
-    System.out.println("The current attributes for this " + entity_name + " are: ");
-    System.out.println("Name: " + item.getName());
-    System.out.println("Contact: " + item.getContact());
-    System.out.println("Membership: " + item.getMembership());
-  }
-
+  @Override
   public void mainOptions() {
     int choice = -1;
     TreeMap<Integer, String> options = new TreeMap<Integer, String>();
@@ -54,7 +48,7 @@ public class CustomerController extends Controller {
       choice = mainPicker.run();
       switch (choice) {
       case 1:
-        data.printAll();
+        printAll();
         break;
       case 2:
         create();

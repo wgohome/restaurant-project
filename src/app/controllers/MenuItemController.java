@@ -11,7 +11,7 @@ import app.utilities.ChoicePicker;
 public class MenuItemController extends Controller {
   public MenuItemController() {
     super(new MenuItemData());
-    entity_name = "Menu Item";
+    entityName = "Menu Item";
   }
 
   protected EntityStorable entityCreator() {
@@ -34,14 +34,6 @@ public class MenuItemController extends Controller {
     return (EntityStorable) (new MenuItem(name, price, type));
   }
 
-  protected void printCurrentEntity(EntityStorable entity) {
-    MenuItem item = (MenuItem) entity; /* TODO: type check, error throw */
-    System.out.println("The current attributes for this " + entity_name + " are: ");
-    System.out.println("Name: " + item.getName());
-    System.out.println("Price: " + item.getPrice());
-    System.out.println("Type: " + item.getType());
-  }
-
   public void mainOptions() {
     int choice = -1;
     TreeMap<Integer, String> options = new TreeMap<Integer, String>();
@@ -55,7 +47,7 @@ public class MenuItemController extends Controller {
       choice = mainPicker.run();
       switch (choice) {
       case 1:
-        data.printAll();
+        printAll();
         break;
       case 2:
         create();

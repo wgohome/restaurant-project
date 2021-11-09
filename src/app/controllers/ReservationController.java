@@ -1,29 +1,58 @@
 package app.controllers;
 
+import java.time.LocalDateTime;
 import java.util.TreeMap;
 
 import app.db.ReservationData;
-import app.entities.*;
+import app.entities.Customer;
+import app.entities.Reservation;
+import app.entities.Table;
 import app.interfaces.EntityStorable;
 import app.utilities.ChoicePicker;
 
 public class ReservationController extends Controller {
   private CustomerController cusControl;
-  private Staff curStaff;
+  private TableController tableControl;
+  private StaffController staffControl;
 
-  public ReservationController(CustomerController cc, Staff curS) {
+  public ReservationController(CustomerController cc, TableController tc, StaffController sfc) {
     super(new ReservationData());
-    entity_name = "Reservation";
+    entityName = "Reservation";
     cusControl = cc;
-    curStaff = curS;
+    tableControl = tc;
+    staffControl = sfc;
   }
 
   @Override
   protected EntityStorable entityCreator() {
-    Staff staff;
     Customer customer;
     Reservation newResv;
+    Table table;
+    LocalDateTime resvDT;
+    int pax;
+
+    customer = pickOrCreateCust();
+    resvDT = askForTime();
+    pax = askForPax();
+    /* Create the reservation */
+    newResv = new Reservation(staffControl.getCurStaff(), customer, pax, resvDT);
+    /* Assign a free table to the reservation */
+    table = tableControl.getOneFreeTable(pax, newResv);
+      /* This will assign newResv to the table
+        if an available table is returned */
+    if (table != null) {
+      newResv.setTable(table);
+        /* Next, assign the table to newResv.
+          The two-way association is complete, yay 🥳 */
+      return newResv;
+    } else {
+      return null;
+    }
+  }
+
+  private Customer pickOrCreateCust() {
     int choice;
+    Customer customer;
     TreeMap<Integer, String> options;
 
     /* Ask if staff exists */
@@ -35,27 +64,40 @@ public class ReservationController extends Controller {
     if (choice == 1) {
       /* Pick from existing customers */
       options = cusControl.getChoiceMap();
-      ChoicePicker cusPicker = new ChoicePicker(
-        "Which customer is this reservation for?",
-        options
-      );
+      ChoicePicker cusPicker = new ChoicePicker("Which customer is this reservation for?", options);
       choice = cusPicker.run();
       customer = (Customer) cusControl.getEntity(choice - 1);
     } else {
       /* Create a new customer */
       customer = (Customer) cusControl.create();
     }
-    /* Create the reservation */
-    newResv = new Reservation(curStaff, customer);
-    return newResv;
+    return customer;
   }
 
-  @Override
-  protected void printCurrentEntity(EntityStorable entity) {
-    Reservation item = (Reservation) entity;
-    System.out.println("The current attributes for this " + entity_name + " are: ");
-    System.out.println("Staff: " + item.getStaff().getName());
-    System.out.println("Customer: " + item.getCustomer().getName());
+  private LocalDateTime askForTime() {
+    LocalDateTime dt;
+    boolean accepted = false;
+
+    System.out.println("What time would you like to reserve for? Format (YYYY-MM-DD)T(HH:MM), for eg. 2021-09-09T10:11");
+    do {
+      try {
+        dt = LocalDateTime.parse(sc.nextLine());
+        accepted = true;
+        return dt;
+      } catch (Exception e) {
+        System.out.println("Ensure the correct format (YYYY-MM-DD)T(HH:MM), for eg. 2021-09-09T10:11");
+      }
+    } while (accepted);
+    return null;
+  }
+
+  private int askForPax() {
+    int pax = -1;
+    System.out.println("How many pax would you like to reserve for? (maximum 10)");
+    while (pax < 1 || pax > 10) {
+      pax = sc.nextInt(); sc.nextLine();
+    }
+    return pax;
   }
 
   @Override
@@ -72,7 +114,7 @@ public class ReservationController extends Controller {
       choice = mainPicker.run();
       switch (choice) {
       case 1:
-        data.printAll();
+        printAll();
         break;
       case 2:
         create();
@@ -82,6 +124,7 @@ public class ReservationController extends Controller {
         break;
       case 4:
         edit();
+        // TODO: edit does not make table occupied, but does free up the previous table (perhaps from the freeTable general function since it is no longer attached to a Bookable)
         break;
       case 9:
         System.out.println("Going back to the main menu ... ");

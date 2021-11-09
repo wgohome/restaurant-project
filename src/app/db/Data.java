@@ -21,6 +21,7 @@ public abstract class Data {
 
   private List<EntityStorable> loadAll(String filepath) {
     /* Private because only for use in this (superclass) constructor */
+    /* Subclass should be calling super constructor from its own constructor to access this feature */
     List<EntityStorable> list;
     File file = new File(filepath);
     if (file.exists()) {
@@ -30,12 +31,8 @@ public abstract class Data {
     }
     return list;
   }
-  protected List<EntityStorable> loadAll() {
-    /* Protected in case subclasses want to use but not needed yet as of now */
-    return this.loadAll(filepath);
-  }
 
-  /* To seed specifically based on the kind of entity subclasses */
+  /* If no .dat file present, will call this method from specific EntityData class to seed some entities */
   protected abstract List<EntityStorable> seedList();
 
   public void printAll() {
@@ -46,6 +43,7 @@ public abstract class Data {
     }
   }
 
+  /* To be called at the end of RestaurantApp main method (Upon choice to exit) to serialise and save into .dat file */
   public void saveAll() {
     Serializer.writeSerializedObject(filepath, list);
   }
@@ -54,6 +52,7 @@ public abstract class Data {
     return entity.getClass().getSimpleName() + ": " + entity.getName();
   }
 
+  /* To create a TreeMap of options to be passed into ChoicePicker boundary class instance, to ask use for their choice */
   public TreeMap<Integer, String> getChoiceMap() {
     /* To be passed as parameter to ChoicePicker */
     EntityStorable e;
@@ -65,6 +64,7 @@ public abstract class Data {
     return options;
   }
 
+  /* To be called from create() in Controller class */
   public void add(EntityStorable entity) {
     if (!list.contains(entity)) {
       /* List add(E) method returns boolean */
@@ -74,28 +74,50 @@ public abstract class Data {
     }
   }
 
+  /* To be called from delete() in Controller class */
+  /* VERSION 1: Returns boolean */
   public void remove(EntityStorable entity) {
-    if (list.remove(entity)) { /* Returns boolean */
+    if (list.remove(entity)) {
       System.out.println("Removed " + getEntityIdentifier(entity));
+      afterRemove(entity);
     } else {
       System.out.println("Failed to remove " + getEntityIdentifier(entity));
     }
   }
+  /* VERSION 2: Returns EntityStorable object */
   public EntityStorable remove(int index) {
-    EntityStorable e = list.remove(index); /* Returns object */
+    EntityStorable e = list.remove(index);
     if (e != null) {
       System.out.println("Removed " + getEntityIdentifier(e));
+      afterRemove(e);
     } else {
       System.out.println("Failed to remove " + getEntityIdentifier(e));
     }
     return e;
   }
 
+  /* To be called from edit() in Controller class */
   public void update(int index, EntityStorable updatedEntity) {
     try {
       /* EntityStorable entity =  */list.set(index, updatedEntity);
     } catch (Exception e) {
       System.out.println("Failed to update entity. ");
     }
+  }
+
+  /* Not used in the app yet */
+  /* To delete data/Entity.dat file for this Entity */
+  public void deleteDataFile() {
+    File datFile = new File(filepath);
+    if (datFile.delete()) {
+      System.out.println("Deleted file at " + filepath);
+    } else {
+      System.out.println("Failed to delete " + filepath);
+    }
+  }
+
+  protected void afterRemove(EntityStorable entity) {
+    /* To be overridden in EntityData class if need to */
+    return;
   }
 }

@@ -1,6 +1,6 @@
 package app.entities;
 
-import app.interfaces.*;
+import app.interfaces.EntityStorable;
 
 public class Staff implements EntityStorable {
   public enum Title { MANAGER, SENIOR, JUNIOR }
@@ -16,13 +16,24 @@ public class Staff implements EntityStorable {
   }
 
   public int getId() { return this.id; }
-  public String getName() { return this.name; }
-  public Title getJobTitle() { return this.jobTitle; }
   public void setId(int i) { this.id = i; }
+
+  @Override
+  public String getName() { return this.name; }
   public void setName(String n) { this.name = n; }
+
+  public Title getJobTitle() { return this.jobTitle; }
   public void setJobTitle(Title r) { this.jobTitle = r; }
 
+  @Override
   public String getDesc() {
-    return getJobTitle().name();
+    return getName() + ": " + getJobTitle().name();
+  }
+
+  @Override
+  public String getAttrsString() {
+    return "Name: " + getName() +
+      "\nStaff ID: " + getId() +
+      "\nJob title: " + getJobTitle().name();
   }
 }
