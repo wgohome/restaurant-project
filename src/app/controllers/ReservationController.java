@@ -82,6 +82,8 @@ public class ReservationController extends Controller {
     do {
       try {
         dt = LocalDateTime.parse(sc.nextLine());
+        // TODO: Need to check if time is in the past or future
+        // TODO: Check if time is within opening hours
         accepted = true;
         return dt;
       } catch (Exception e) {

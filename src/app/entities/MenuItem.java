@@ -1,30 +1,14 @@
 package app.entities;
 
-import app.interfaces.EntityStorable;
-import app.interfaces.Orderable;
-
-public class MenuItem implements EntityStorable, Orderable {
+public class MenuItem extends Orderable {
   public enum ItemType { ENTREE, SIDES, DRINKS, DESSERTS };
 
-  private String name;
-  private double price;
   private ItemType type;
 
   public MenuItem(String n, double p, ItemType t) {
-    name = n;
-    price = p;
+    super(n, p);
     type = t;
   }
-
-  @Override
-  public String getName() { return name; }
-  public void setName(String n) { name = n; }
-
-  public double getPrice() { return price; }
-  public String getPriceString() {
-    return String.format("$ %.2f", getPrice());
-  }
-  public void setPrice(double p) { price = p; }
 
   public ItemType getType() { return type; }
   public String getTypeString() { return getType().name(); }
@@ -33,7 +17,7 @@ public class MenuItem implements EntityStorable, Orderable {
   @Override
   public String getDesc() {
     return getName() + " " +
-      String.format("$ %.2f", price) + " (" +
+      getPriceString() + " (" +
       getTypeString() + ")";
   }
 
@@ -42,5 +26,10 @@ public class MenuItem implements EntityStorable, Orderable {
     return "Name: " + getName() +
       "\nPrice: " + getPriceString() +
       "\nType: " + getTypeString();
+  }
+
+  @Override
+  public String getInvoiceEntry() {
+    return getName();
   }
 }
