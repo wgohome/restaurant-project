@@ -24,6 +24,6 @@ public abstract class Bookable implements EntityStorable {
   public String getTableName() { return table.getName(); }
   public void setTable(Table t) {
     table = t;
-    /* Ensure that the controller calling this method has stored the Bookable in the Table as well. Bi-directional */
+    /* Ensure that the boundary calling this method has stored the Bookable in the Table as well. Bi-directional */
   }
 }

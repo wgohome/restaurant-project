@@ -1,79 +1,55 @@
 package app.controllers;
 
-import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.List;
 
-import app.db.TableData;
 import app.entities.Bookable;
 import app.entities.Table;
 import app.interfaces.EntityStorable;
-import app.utilities.ChoicePicker;
 
 public class TableController extends Controller {
   public TableController() {
-    super(new TableData());
-    entityName = "Table";
+    super("data/tables.dat");
   }
 
-  @Override
-  protected EntityStorable entityCreator() {
-    int id;
-    int pax;
-
-    System.out.println("Enter table ID: ");
-    id = sc.nextInt(); sc.nextLine();
-
-    System.out.println("Enter table capacity (pax): ");
-    pax = sc.nextInt(); sc.nextLine();
-
-    return (EntityStorable) (new Table(id, pax));
-  }
-
-  @Override
-  public void mainOptions() {
-    int choice = -1;
-    TreeMap<Integer, String> options = new TreeMap<Integer, String>();
-    options.put(1, "List all Tables");
-    options.put(2, "Add new Table");
-    options.put(3, "Remove a Table");
-    // options.put(4, "Edit a Table");
-    options.put(5, "Free up Tables with expired Reservations");
-    options.put(9, "Exit - Back to main menu");
-    ChoicePicker mainPicker = new ChoicePicker("This is the Table menu, what would you like to do? ", options);
-    while (choice != 9) {
-      choice = mainPicker.run();
-      switch (choice) {
-      case 1:
-        printAll();
-        break;
-      case 2:
-        create();
-        break;
-      case 3:
-        delete();
-        break;
-      // case 4:
-      //   edit();
-      //   break;
-      case 5:
-        freeUpTables();
-        break;
-      case 9:
-        System.out.println("Going back to the main menu ... ");
-        break;
-      default:
-        break;
-      }
-    }
+  protected List<EntityStorable> seedList() {
+    List<EntityStorable> tables = new ArrayList<EntityStorable>();
+    tables.add(new Table(1, 2));
+    tables.add(new Table(2, 2));
+    tables.add(new Table(3, 4));
+    tables.add(new Table(4, 4));
+    tables.add(new Table(5, 6));
+    tables.add(new Table(6, 6));
+    tables.add(new Table(7, 8));
+    tables.add(new Table(8, 8));
+    tables.add(new Table(9, 10));
+    tables.add(new Table(10, 10));
+    return tables;
   }
 
   public Table getOneFreeTable(int pax, Bookable booker) {
-    TableData tableData = (TableData) getData();
-    return tableData.getOneFreeTable(pax, booker);
+    Table table = null;
+    /* Free up tables before trying to get a table */
+    freeUpTables();
+    for (EntityStorable e:getList()) {
+      table = (Table) e;
+      if (!table.isOccupied() && table.getPax() >= pax) {
+        table.bookTable(booker);
+        break;
+      } else {
+        table = null;
+      }
+    }
+    if (table == null)
+      System.out.println("No available table for " + pax + " pax now");
+    return table;
   }
 
   public void freeUpTables() {
-    TableData tableData = (TableData) getData();
-    tableData.freeUpTables();
-    /* TODO: delete the reservation too */
+    System.out.println("Freeing up any table with expired reservations ...");
+    for (EntityStorable e:getList()) {
+      Table table = (Table) e;
+      table.freeIfResvExpired();
+    }
   }
 }

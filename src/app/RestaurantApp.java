@@ -3,12 +3,12 @@ package app;
 import java.util.Scanner;
 import java.util.TreeMap;
 
-import app.controllers.Controller;
-import app.controllers.CustomerController;
-import app.controllers.MenuItemController;
-import app.controllers.ReservationController;
-import app.controllers.StaffController;
-import app.controllers.TableController;
+import app.boundaries.Boundary;
+import app.boundaries.CustomerBoundary;
+import app.boundaries.MenuItemBoundary;
+import app.boundaries.ReservationBoundary;
+import app.boundaries.StaffBoundary;
+import app.boundaries.TableBoundary;
 import app.utilities.ChoicePicker;
 
 public class RestaurantApp {
@@ -19,12 +19,12 @@ public class RestaurantApp {
     int choice = -1;
 
     System.out.println("Welcome to the restaurant POS Application ");
-    // Initialize controllers
-    StaffController staffControl = new StaffController();
-    MenuItemController itemControl = new MenuItemController();
-    CustomerController customerControl = new CustomerController();
-    TableController tableControl = new TableController();
-    ReservationController reservationControl = new ReservationController(customerControl, tableControl, staffControl);
+    // Initialize boundaries
+    StaffBoundary staffBoundary = new StaffBoundary();
+    MenuItemBoundary itemBoundary = new MenuItemBoundary();
+    CustomerBoundary customerBoundary = new CustomerBoundary();
+    TableBoundary tableBoundary = new TableBoundary();
+    ReservationBoundary reservationBoundary = new ReservationBoundary(customerBoundary, tableBoundary, staffBoundary);
 
     // Main menu
     String prompt = "Which section do you want to go to? ";
@@ -44,7 +44,7 @@ public class RestaurantApp {
       choice = picker.run();
       switch (choice) {
       case 1:
-        itemControl.mainOptions();
+        itemBoundary.mainOptions();
         break;
       case 2:
         System.out.println("Entering option 2");
@@ -53,37 +53,37 @@ public class RestaurantApp {
         System.out.println("Entering option 3");
         break;
       case 4:
-        reservationControl.mainOptions();
+        reservationBoundary.mainOptions();
         break;
       case 5:
         System.out.println("Entering option 5");
         break;
       case 6:
-        tableControl.mainOptions();
+        tableBoundary.mainOptions();
         break;
       case 7:
-        customerControl.mainOptions();
+        customerBoundary.mainOptions();
         break;
       case 8:
-        staffControl.mainOptions();
+        staffBoundary.mainOptions();
         break;
       case 9:
         System.out.println("Exiting the app ...");
         // Save all ephemeral data to stores
-        staffControl.saveAll();
-        itemControl.saveAll();
-        customerControl.saveAll();
-        tableControl.saveAll();
-        reservationControl.saveAll();
+        staffBoundary.saveAll();
+        itemBoundary.saveAll();
+        customerBoundary.saveAll();
+        tableBoundary.saveAll();
+        reservationBoundary.saveAll();
         break;
       case 100:
         /* For development purposes */
         System.out.println("Deleting files ...");
-        deleteFiles(staffControl);
-        deleteFiles(itemControl);
-        deleteFiles(customerControl);
-        deleteFiles(tableControl);
-        deleteFiles(reservationControl);
+        deleteFiles(staffBoundary);
+        deleteFiles(itemBoundary);
+        deleteFiles(customerBoundary);
+        deleteFiles(tableBoundary);
+        deleteFiles(reservationBoundary);
         break;
       default:
         break;
@@ -92,8 +92,8 @@ public class RestaurantApp {
     sc.close();
   }
 
-  private static void deleteFiles(Controller c) {
+  private static void deleteFiles(Boundary c) {
     /* For development purposes */
-    c.getData().deleteDataFile();
+    c.getController().deleteControllerFile();
   }
 }
