@@ -11,15 +11,15 @@ import app.utilities.ChoicePicker;
 public abstract class Boundary {
   protected static Scanner sc = RestaurantApp.sc;
 
-  private Controller data;
+  private Controller controller;
   protected String entityName; /* To be set in Subclass Constructor */
 
-  public Boundary(Controller dataIn) {
-    data = dataIn;
+  public Boundary(Controller controllerIn) {
+    controller = controllerIn;
   }
 
   public String getEntityName() { return entityName; }
-  public Controller getController() { return data; }
+  public Controller getController() { return controller; }
   /* No setters as they are not meant to be changed
     in the lifetime of the object */
 

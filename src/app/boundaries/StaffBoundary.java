@@ -13,7 +13,7 @@ public class StaffBoundary extends Boundary {
 
   public StaffBoundary() {
     super(new StaffController());
-    /* Sets the protected attributes: data and sc */
+    /* Sets the protected attributes: controller and sc */
     staffSelector();
     entityName = "Staff";
   }
