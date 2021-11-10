@@ -31,5 +31,5 @@ public abstract class Orderable implements EntityStorable {
   public abstract String getAttrsString();
 
   public abstract String getInvoiceEntry();
-    /* Just name for MenuItem, but list of items for Package */
+    /* Just return name for MenuItem, but return list of items for Package */
 }
