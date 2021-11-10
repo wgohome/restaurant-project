@@ -89,7 +89,7 @@ public class ReservationBoundary extends Boundary {
       } catch (Exception e) {
         System.out.println("Ensure the correct format (YYYY-MM-DD)T(HH:MM), for eg. 2021-09-09T10:11");
       }
-    } while (accepted);
+    } while (!accepted);
     return null;
   }
 
@@ -97,6 +97,7 @@ public class ReservationBoundary extends Boundary {
     int pax = -1;
     System.out.println("How many pax would you like to reserve for? (maximum 10)");
     while (pax < 1 || pax > 10) {
+      System.out.println("How many pax would you like to reserve for? (maximum 10)");
       pax = sc.nextInt(); sc.nextLine();
     }
     return pax;
