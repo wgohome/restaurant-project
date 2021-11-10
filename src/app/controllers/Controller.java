@@ -52,6 +52,10 @@ public abstract class Controller {
     return entity.getClass().getSimpleName() + ": " + entity.getName();
   }
 
+  public EntityStorable getEntity(int index) {
+    return getList().get(index);
+  }
+
   /* To create a TreeMap of options to be passed into ChoicePicker boundary class instance, to ask use for their choice */
   public TreeMap<Integer, String> getChoiceMap() {
     /* To be passed as parameter to ChoicePicker */

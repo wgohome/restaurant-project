@@ -16,18 +16,21 @@ public class ChoicePicker {
     options = optionsIn;
   }
 
-  public int run() {
+  public int run(boolean toPrintOptions) {
     int choice = -1;
 
     System.out.println("");
     System.out.println(prompt);
-    printOptions();
+    if (toPrintOptions) printOptions();
     /* Expects none of the options key to really be -1 */
     while (!options.containsKey(choice)) {
       System.out.println("Enter a valid option number: ");
       choice = sc.nextInt(); sc.nextLine();
     }
     return choice;
+  }
+  public int run() {
+    return run(true);
   }
 
   private void printOptions() {

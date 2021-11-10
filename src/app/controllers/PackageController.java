@@ -10,6 +10,7 @@ public class PackageController extends Controller {
   public PackageController() {
     super("package.dat");
   }
+
   @Override
   protected List<EntityStorable> seedList() {
     List<EntityStorable> packages = new ArrayList<EntityStorable>();

@@ -48,7 +48,7 @@ public class CustomerBoundary extends Boundary {
       choice = mainPicker.run();
       switch (choice) {
       case 1:
-        printAll();
+        indexAll();
         break;
       case 2:
         create();

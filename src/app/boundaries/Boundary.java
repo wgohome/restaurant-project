@@ -26,12 +26,29 @@ public abstract class Boundary {
 
   /* Wrappers to Controller subclasses' methods */
   public void saveAll() { getController().saveAll(); }
-  public void printAll() { getController().printAll(); }
+  public void printAll() {
+    getController().printAll();
+  }
   public EntityStorable getEntity(int index)
-    { return getController().getList().get(index); }
+  { return getController().getEntity(index); }
   public TreeMap<Integer, String> getChoiceMap()
-    { return getController().getChoiceMap(); }
+  { return getController().getChoiceMap(); }
 
+  public void indexAll() {
+    int choice = -1;
+
+    TreeMap<Integer, String> options = getController().getChoiceMap();
+    options.put(0, "Exit this submenu");
+    ChoicePicker picker = new ChoicePicker(
+      "Which " + entityName + " do you want to see all its attributes for? (Select 0 if you want to go back to exit this submenu)",
+      options);
+    choice = picker.run(); /* Run with all options listed the first time */
+    while (choice != 0) {
+      if (choice != 0) printEntityAttrs(choice - 1);
+      choice = picker.run(false); /* Run without options listed */
+    }
+    System.out.println("Leaving index for " + entityName + " ...");
+  }
 
   /* Implementation for the sub menu, i.e. the CRUD++ actions */
   public abstract void mainOptions();
@@ -84,6 +101,10 @@ public abstract class Boundary {
     System.out.println("The current attributes for this " + entityName + " are: ");
     System.out.println(entity.getAttrsString());
   }
+  protected void printEntityAttrs(int index) {
+    EntityStorable entity = getController().getEntity(index);
+    this.printEntityAttrs(entity);
+  }
 
 
   /* Asks the user for all the input arguments,
@@ -94,8 +115,8 @@ public abstract class Boundary {
   /* Prints the list of all instances of this Entity,
     ask the user to select one, returns the choice number */
   protected int entityIntChoicePicker(String prompt) {
-    ChoicePicker delPicker = new ChoicePicker(prompt, getController().getChoiceMap());
-    return delPicker.run();
+    ChoicePicker entityPicker = new ChoicePicker(prompt, getController().getChoiceMap());
+    return entityPicker.run();
     /* Note: choice starts from 1, index start from 0 */
   }
 }

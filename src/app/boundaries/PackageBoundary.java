@@ -44,14 +44,16 @@ public class PackageBoundary extends Boundary {
     options.put(1, "List all Packages");
     options.put(2, "Add new Package");
     options.put(3, "Remove a Package");
-    options.put(4, "Edit a Package");
+    options.put(4, "Edit a Package (Replace old Package with a new one");
+    options.put(5, "Add MenuItem to a Package");
+    options.put(6, "Remove MenuItem from a Package");
     options.put(9, "Exit - Back to main menu");
     ChoicePicker mainPicker = new ChoicePicker("This is the Packages menu, what would you like to do? ", options);
     while (choice != 9) {
       choice = mainPicker.run();
       switch (choice) {
       case 1:
-        printAll();
+        indexAll();
         break;
       case 2:
         create();
@@ -62,6 +64,12 @@ public class PackageBoundary extends Boundary {
       case 4:
         edit();
         break;
+      case 5:
+        addItemToPackage();
+        break;
+      case 6:
+        removeItemFromPackage();
+        break;
       case 9:
         System.out.println("Going back to the main menu ... ");
         break;
@@ -69,5 +77,20 @@ public class PackageBoundary extends Boundary {
         break;
       }
     }
+  }
+
+  private void addItemToPackage() {
+    // TODO: addItemToPackage
+    /* Choose the MenuItem to add */
+    ChoicePicker picker = new ChoicePicker(
+      "",
+      getChoiceMap());
+    /* Add the MenuItem to Package */
+  }
+
+  private void removeItemFromPackage() {
+    // TODO: removeItemFromPackage
+    /* Choose the MenuItem to remove */
+    /* Remove the MenuItem to Package */
   }
 }
