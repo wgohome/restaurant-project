@@ -39,7 +39,7 @@ public abstract class Controller {
     if (list == null || list.isEmpty()) return;
     System.out.println("List of all " + list.get(0).getClass().getSimpleName());
     for (int i = 0; i < list.size(); i++) {
-      System.out.println((i + 1) + ". " + list.get(i).getName() + ": " + list.get(i).getDesc());
+      System.out.println((i + 1) + ". " + list.get(i).getDesc());
     }
   }
 

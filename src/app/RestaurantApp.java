@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import app.boundaries.Boundary;
 import app.boundaries.CustomerBoundary;
 import app.boundaries.MenuItemBoundary;
+import app.boundaries.PromotionBoundary;
 import app.boundaries.ReservationBoundary;
 import app.boundaries.StaffBoundary;
 import app.boundaries.TableBoundary;
@@ -22,6 +23,7 @@ public class RestaurantApp {
     // Initialize boundaries
     StaffBoundary staffBoundary = new StaffBoundary();
     MenuItemBoundary itemBoundary = new MenuItemBoundary();
+    PromotionBoundary promotionBoundary = new PromotionBoundary(itemBoundary);
     CustomerBoundary customerBoundary = new CustomerBoundary();
     TableBoundary tableBoundary = new TableBoundary();
     ReservationBoundary reservationBoundary = new ReservationBoundary(customerBoundary, tableBoundary, staffBoundary);
@@ -47,7 +49,7 @@ public class RestaurantApp {
         itemBoundary.mainOptions();
         break;
       case 2:
-        System.out.println("Entering option 2");
+        promotionBoundary.mainOptions();
         break;
       case 3:
         System.out.println("Entering option 3");
@@ -69,9 +71,10 @@ public class RestaurantApp {
         break;
       case 9:
         System.out.println("Exiting the app ...");
-        // Save all ephemeral data to stores
+        /* Save all ephemeral data to stores */
         staffBoundary.saveAll();
         itemBoundary.saveAll();
+        promotionBoundary.saveAll();
         customerBoundary.saveAll();
         tableBoundary.saveAll();
         reservationBoundary.saveAll();
@@ -81,6 +84,7 @@ public class RestaurantApp {
         System.out.println("Deleting files ...");
         deleteFiles(staffBoundary);
         deleteFiles(itemBoundary);
+        deleteFiles(promotionBoundary);
         deleteFiles(customerBoundary);
         deleteFiles(tableBoundary);
         deleteFiles(reservationBoundary);
