@@ -9,6 +9,7 @@ import app.interfaces.EntityStorable;
 public class ReservationController extends Controller {
   public ReservationController() {
     super("data/reservations.dat");
+    updateNextId();
   }
 
   protected List<EntityStorable> seedList() {
@@ -22,6 +23,15 @@ public class ReservationController extends Controller {
   protected void afterRemove(EntityStorable entity) {
     /* Free the table */
     Reservation resv = (Reservation) entity;
-    resv.getTable().freeTable();
+    resv.getTable().removeReservation(resv);
+  }
+
+  private void updateNextId() {
+    for (EntityStorable entity:getList()) {
+      Reservation resv = (Reservation) entity;
+      if (Reservation.getNextId() <= resv.getId()) {
+        Reservation.setNextId(resv.getId() + 1);
+      }
+    }
   }
 }

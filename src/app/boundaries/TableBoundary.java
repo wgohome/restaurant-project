@@ -1,9 +1,9 @@
 package app.boundaries;
 
+import java.time.LocalDateTime;
 import java.util.TreeMap;
 
 import app.controllers.TableController;
-import app.entities.Bookable;
 import app.entities.Table;
 import app.interfaces.EntityStorable;
 import app.utilities.ChoicePicker;
@@ -16,16 +16,10 @@ public class TableBoundary extends Boundary {
 
   @Override
   protected EntityStorable entityCreator() {
-    int id;
     int pax;
-
-    System.out.println("Enter table ID: ");
-    id = sc.nextInt(); sc.nextLine();
-
     System.out.println("Enter table capacity (pax): ");
     pax = sc.nextInt(); sc.nextLine();
-
-    return (EntityStorable) (new Table(id, pax));
+    return (EntityStorable) (new Table(pax));
   }
 
   @Override
@@ -66,14 +60,13 @@ public class TableBoundary extends Boundary {
     }
   }
 
-  public Table getOneFreeTable(int pax, Bookable booker) {
-    TableController tableController = (TableController) getController();
-    return tableController.getOneFreeTable(pax, booker);
+  public Table getOneFreeTable(int pax, LocalDateTime start, LocalDateTime end) {
+    TableController tableControl = (TableController) getController();
+    return tableControl.getOneFreeTable(pax, start, end);
   }
 
   public void freeUpTables() {
     TableController tableController = (TableController) getController();
     tableController.freeUpTables();
-    /* TODO: delete the reservation too */
   }
 }

@@ -1,40 +1,49 @@
 package app.controllers;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.entities.Bookable;
 import app.entities.Table;
 import app.interfaces.EntityStorable;
 
 public class TableController extends Controller {
   public TableController() {
     super("data/tables.dat");
+    updateNextId();
   }
 
   protected List<EntityStorable> seedList() {
     List<EntityStorable> tables = new ArrayList<EntityStorable>();
-    tables.add(new Table(1, 2));
-    tables.add(new Table(2, 2));
-    tables.add(new Table(3, 4));
-    tables.add(new Table(4, 4));
-    tables.add(new Table(5, 6));
-    tables.add(new Table(6, 6));
-    tables.add(new Table(7, 8));
-    tables.add(new Table(8, 8));
-    tables.add(new Table(9, 10));
-    tables.add(new Table(10, 10));
+    tables.add(new Table(2));
+    tables.add(new Table(2));
+    tables.add(new Table(4));
+    tables.add(new Table(4));
+    tables.add(new Table(6));
+    tables.add(new Table(6));
+    tables.add(new Table(8));
+    tables.add(new Table(8));
+    tables.add(new Table(10));
+    tables.add(new Table(10));
     return tables;
   }
 
-  public Table getOneFreeTable(int pax, Bookable booker) {
+  private void updateNextId() {
+    for (EntityStorable entity : getList()) {
+      Table table = (Table) entity;
+      if (Table.getNextId() <= table.getId()) {
+        Table.setNextId(table.getId() + 1);
+      }
+    }
+  }
+
+  public Table getOneFreeTable(int pax, LocalDateTime start, LocalDateTime end) {
     Table table = null;
     /* Free up tables before trying to get a table */
     freeUpTables();
     for (EntityStorable e:getList()) {
       table = (Table) e;
-      if (!table.isOccupied() && table.getPax() >= pax) {
-        table.bookTable(booker);
+      if (table.isFree(start, end) && table.getPax() >= pax) {
         break;
       } else {
         table = null;
@@ -49,7 +58,7 @@ public class TableController extends Controller {
     System.out.println("Freeing up any table with expired reservations ...");
     for (EntityStorable e:getList()) {
       Table table = (Table) e;
-      table.freeIfResvExpired();
+      table.freeExpiredReservations();
     }
   }
 }
