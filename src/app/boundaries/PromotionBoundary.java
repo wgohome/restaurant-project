@@ -96,35 +96,46 @@ public class PromotionBoundary extends Boundary {
   }
 
   private void addItemToPromotion(Promotion promo) {
+    int itemChoice;
     /* Choose the MenuItem to add */
+    TreeMap<Integer, String> options = itemBoundary.getChoiceMap();
+    options.put(0, "Done and go back to previous menu");
     ChoicePicker itemPicker = new ChoicePicker(
       "Which Menu Item to add to Promotion " + promo.getName(),
-      itemBoundary.getChoiceMap()
+      options
     );
-    int itemChoice = itemPicker.run();
-    MenuItem item = (MenuItem) itemBoundary.getEntity(itemChoice - 1);
-    /* Add the MenuItem to Promotion */
-    promo.addItem(item);
-      /* Note: No checks done if item exists because ChoicePicker already takes care of the checks */
+    itemChoice = itemPicker.run();
+    while (itemChoice != 0) {
+      MenuItem item = (MenuItem) itemBoundary.getEntity(itemChoice - 1);
+      /* Add the MenuItem to Promotion */
+      promo.addItem(item);
+        /* Note: No checks done if item exists because ChoicePicker already takes care of the checks */
+      itemChoice = itemPicker.run();
+    }
   }
 
   private void removeItemFromPromotion() {
+    int itemChoice;
+    int promoChoice;
     /* Choose which promotion to remove from */
     ChoicePicker promotionPicker = new ChoicePicker(
       "Which Promotion to remove from?",
       getChoiceMap()
     );
-    int promoChoice = promotionPicker.run();
+    promoChoice = promotionPicker.run();
     Promotion promo = (Promotion) getEntity(promoChoice - 1);
     /* Choose the MenuItem to remove */
     ChoicePicker itemPicker = new ChoicePicker(
       "Which Menu Item to remove from Promotion: " + promo.getName(),
       this.makeChoiceMap(promo)
     );
-    int itemChoice = itemPicker.run();
-    /* Remove the MenuItem from Promotion */
-    promo.removeItem(itemChoice - 1);
-      /* Note: No checks done if item exists because ChoicePicker already takes care of the checks */
+    itemChoice = itemPicker.run();
+    while (itemChoice != 0) {
+      /* Remove the MenuItem from Promotion */
+      promo.removeItem(itemChoice - 1);
+        /* Note: No checks done if item exists because ChoicePicker already takes care of the checks */
+      itemChoice = itemPicker.run();
+    }
   }
 
   private TreeMap<Integer, String> makeChoiceMap(Promotion promo) {
@@ -133,6 +144,7 @@ public class PromotionBoundary extends Boundary {
     for (int i = 0 ; i < promo.getNumItems(); i++) {
       options.put(i + 1, promo.getItemName(i));
     }
+    options.put(0, "Done and go back to previous menu");
     return options;
   }
 }
