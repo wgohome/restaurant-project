@@ -28,7 +28,7 @@ public class RestaurantApp {
     CustomerBoundary customerBoundary = new CustomerBoundary();
     TableBoundary tableBoundary = new TableBoundary();
     ReservationBoundary resvBoundary = new ReservationBoundary(customerBoundary, tableBoundary, staffBoundary);
-    OrderBoundary orderBoundary = new OrderBoundary(customerBoundary,tableBoundary, staffBoundary, resvBoundary);
+    OrderBoundary orderBoundary = new OrderBoundary(customerBoundary,tableBoundary, staffBoundary, resvBoundary, itemBoundary, promotionBoundary);
 
     // Main menu
     String prompt = "Which section do you want to go to? ";

@@ -2,7 +2,7 @@ package app.entities;
 
 import app.interfaces.EntityStorable;
 
-public abstract class Orderable implements EntityStorable {
+public abstract class Orderable implements EntityStorable, Comparable<Orderable> {
   private String name;
   private double price;
 
@@ -32,4 +32,9 @@ public abstract class Orderable implements EntityStorable {
 
   public abstract String getInvoiceEntry();
     /* Just return name for MenuItem, but return list of items for Package */
+
+  @Override
+  public int compareTo(Orderable o) {
+    return this.getName().compareTo(o.getName());
+  }
 }
