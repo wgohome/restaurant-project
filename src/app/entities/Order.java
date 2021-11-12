@@ -45,5 +45,5 @@ public class Order extends Bookable {
       "\nTable: " + getTableName() +
       "\nNum pax: " + getPax() +
       "\nBooked for: " + getStartString() +
-      " (" + Table.MAX_DINING_HRS + "hours)";  }
+      " (" + Table.MAX_DINING_HRS + " hours)";  }
 }

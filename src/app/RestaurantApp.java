@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import app.boundaries.Boundary;
 import app.boundaries.CustomerBoundary;
 import app.boundaries.MenuItemBoundary;
+import app.boundaries.OrderBoundary;
 import app.boundaries.PromotionBoundary;
 import app.boundaries.ReservationBoundary;
 import app.boundaries.StaffBoundary;
@@ -26,7 +27,8 @@ public class RestaurantApp {
     PromotionBoundary promotionBoundary = new PromotionBoundary(itemBoundary);
     CustomerBoundary customerBoundary = new CustomerBoundary();
     TableBoundary tableBoundary = new TableBoundary();
-    ReservationBoundary reservationBoundary = new ReservationBoundary(customerBoundary, tableBoundary, staffBoundary);
+    ReservationBoundary resvBoundary = new ReservationBoundary(customerBoundary, tableBoundary, staffBoundary);
+    OrderBoundary orderBoundary = new OrderBoundary(customerBoundary,tableBoundary, staffBoundary, resvBoundary);
 
     // Main menu
     String prompt = "Which section do you want to go to? ";
@@ -52,10 +54,10 @@ public class RestaurantApp {
         promotionBoundary.mainOptions();
         break;
       case 3:
-        System.out.println("Entering option 3");
+        orderBoundary.mainOptions();
         break;
       case 4:
-        reservationBoundary.mainOptions();
+        resvBoundary.mainOptions();
         break;
       case 5:
         System.out.println("Entering option 5");
@@ -77,7 +79,8 @@ public class RestaurantApp {
         promotionBoundary.saveAll();
         customerBoundary.saveAll();
         tableBoundary.saveAll();
-        reservationBoundary.saveAll();
+        resvBoundary.saveAll();
+        orderBoundary.saveAll();
         break;
       case 100:
         /* For development purposes */
@@ -87,7 +90,8 @@ public class RestaurantApp {
         deleteFiles(promotionBoundary);
         deleteFiles(customerBoundary);
         deleteFiles(tableBoundary);
-        deleteFiles(reservationBoundary);
+        deleteFiles(resvBoundary);
+        deleteFiles(orderBoundary);
         break;
       default:
         break;
