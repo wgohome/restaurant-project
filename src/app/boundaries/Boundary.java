@@ -75,9 +75,11 @@ public abstract class Boundary {
   public void delete() {
     /* Ask what entitiy to remove, choose from the EntityController's List */
     int choice = entityIntChoicePicker("Which " + entityName + " do you want to delete? ");
-    /* EntityController class to remove the entity in their List */
-    getController().remove(choice - 1);
-      /* Note: choice starts from 1, index start from 0 */
+    if (choice > 0) {
+      /* EntityController class to remove the entity in their List */
+      getController().remove(choice - 1);
+        /* Note: choice starts from 1, index start from 0 */
+    }
   }
 
 
@@ -85,15 +87,19 @@ public abstract class Boundary {
   public void edit() {
     /* Ask what entitiy to edit, from the EntityController's List */
     int choice = entityIntChoicePicker("Which " + entityName + " do you want to edit? ");
-    /* Show what the current fields are */
-    printEntityAttrs(getController().getList().get(choice - 1));
-    /* Create a new Entity instance */
-    System.out.println("Edit: Fill up the fields for updated " + entityName + " ...");
-    EntityStorable entity = entityCreator();
-    /* Replace the old entity with new entity at the appropriate index */
-    getController().update(choice - 1, entity);
-      /* side effects of afterRemove() will be called in Controller class */
+    if (choice > 0) {
+      /* Show what the current fields are */
+      printEntityAttrs(getController().getList().get(choice - 1));
+      /* Create a new Entity instance */
+      System.out.println("Edit: Fill up the fields for updated " + entityName + " ...");
+      EntityStorable entity = entityCreator();
+      /* Replace the old entity with new entity at the appropriate index */
+      getController().update(choice - 1, entity);
+        /* side effects of afterRemove() will be called in Controller class */
+    }
   }
+  /* TODO: Known bug: when we edit a Reservation, we need to look for a new table. Sometimes there is no more table but the oldReservation's table could be passed to the new reservation */
+  /* Maybe to edit: Could remove first, then create */
 
 
   /* Show attributes of ONE entity */
@@ -115,7 +121,9 @@ public abstract class Boundary {
   /* Prints the list of all instances of this Entity,
     ask the user to select one, returns the choice number */
   protected int entityIntChoicePicker(String prompt) {
-    ChoicePicker entityPicker = new ChoicePicker(prompt, getController().getChoiceMap());
+    TreeMap<Integer, String> options = getController().getChoiceMap();
+    options.put(0, "Exit this submenu");
+    ChoicePicker entityPicker = new ChoicePicker(prompt, options);
     return entityPicker.run();
     /* Note: choice starts from 1, index start from 0 */
   }

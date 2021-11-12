@@ -81,14 +81,20 @@ public class Table implements EntityStorable {
   }
 
   public void freeExpiredReservations() {
+    List<Reservation> toRemove = new ArrayList<Reservation>();
     for (Reservation resv : getReservations()) {
       if (resv.isExpired()) {
         /* Unlink Table from Reservation */
         resv.unsetTable(this);
-        /* Remove Reservation from List attached to this Table */
-        removeReservation(resv);
+        toRemove.add(resv);
       }
     }
+    /* Remove Reservation from List attached to this Table */
+    for (Reservation resv : toRemove) {
+      removeReservation(resv);
+    }
+    /* We are unable to delete the Reservation from ReservationController list here.
+      When a Reservation has table = null, it is considered expired, or checkign the start end will also show the same through isExpired(), so it will be handled by the ReservationController accordingly */
   }
 
   @Override

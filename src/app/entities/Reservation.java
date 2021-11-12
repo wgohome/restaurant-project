@@ -27,11 +27,12 @@ public class Reservation extends Bookable {
   public boolean isExpired() {
     return start
       .plus(Duration.ofMinutes(MINS_EXPIRY))
-      .isAfter(LocalDateTime.now());
+      .isBefore(LocalDateTime.now());
   }
 
   public void unsetTable(Table t) {
     if (getTable() == t) {
+      System.out.println("Unlinked " + t.getName() + " from this " + this.getName());
       setTable(null);
     } else {
       System.out.println(this.getName() + " is not currently linked to " + t.getName() + ", cannot unset.");
