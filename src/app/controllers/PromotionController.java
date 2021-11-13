@@ -8,13 +8,14 @@ import app.interfaces.EntityStorable;
 
 public class PromotionController extends Controller {
   public PromotionController() {
-    super("promotion.dat");
+    super("data/promotion.dat");
   }
 
   @Override
   protected List<EntityStorable> seedList() {
     List<EntityStorable> promotions = new ArrayList<EntityStorable>();
-    promotions.add(new Promotion("Promo 1", 20));
+    Promotion promo1 = new Promotion("Promo 1", 20);
+    promotions.add(promo1);
     return promotions;
   }
 }

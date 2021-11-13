@@ -3,9 +3,9 @@ package app.entities;
 import app.interfaces.EntityStorable;
 
 public class Customer implements EntityStorable {
-  public String name;
-  public String contact;
-  public Boolean membership;
+  private String name;
+  private String contact;
+  private Boolean membership;
 
   public Customer(String name, String contact, Boolean mem) {
     this.name = name;

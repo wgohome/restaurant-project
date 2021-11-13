@@ -20,6 +20,7 @@ public class Promotion extends Orderable {
     return getItem(index).getName();
   }
 
+  /* TODO: Promotional Package should have different quantities of Menu Items */
   public void addItem(MenuItem item) {
     /* Check that item is not already inside promotion */
     if (getItems().contains(item)){
@@ -60,7 +61,7 @@ public class Promotion extends Orderable {
 
   @Override
   public String getInvoiceEntry() {
-    String line = "";
+    String line = getName() + " (";
     for (int i = 0; i < getNumItems(); i++) {
       if (i > 0) line += ", ";
       line += getItemName(i);

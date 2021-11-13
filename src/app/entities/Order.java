@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 public class Order extends Bookable {
   private static int nextId = 1;
+  private Invoice invoice;
 
   private TreeMap<Orderable, Integer> orderItems;
 
@@ -19,6 +20,7 @@ public class Order extends Bookable {
     table = t;
     id = nextId++;
     orderItems = new TreeMap<Orderable, Integer>();
+    invoice = null;
   }
 
   public Order(Staff s, Customer c, int p, Table t) {
@@ -30,6 +32,20 @@ public class Order extends Bookable {
     table = t;
     id = nextId++;
     orderItems = new TreeMap<Orderable, Integer>();
+    invoice = null;
+  }
+
+  public Invoice getInvoice() { return invoice; }
+  public void setInvoice(Invoice inv) {
+    System.out.println("Creating invoice ...");
+    invoice = inv;
+  }
+  public void printInvoice() {
+    if (invoice != null) {
+      invoice.printOrder();
+    } else {
+      System.out.println("Have not made payment yet!");
+    }
   }
 
   @Override

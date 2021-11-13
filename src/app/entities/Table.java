@@ -35,7 +35,14 @@ public class Table implements EntityStorable {
 
   public Order getOccupiedBy() {return occupiedBy; }
   public void setOccupiedBy(Order order) { occupiedBy = order; }
-  public void setUnoccupied() { occupiedBy = null; }
+  public void setUnoccupied(Order order) {
+    if (order == occupiedBy) {
+      occupiedBy = null;
+      System.out.println("Successfully free up " + this.getName() + " from " + order.getName());
+    } else {
+      System.out.println("Fail to free up " + this.getName() + " from " + order.getName());
+    }
+  }
 
   public List<Reservation> getReservations() { return reservations; }
   public void addReservation(Reservation resv) {

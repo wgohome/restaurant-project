@@ -5,6 +5,7 @@ import java.util.TreeMap;
 
 import app.controllers.OrderController;
 import app.entities.Customer;
+import app.entities.Invoice;
 import app.entities.Order;
 import app.entities.Orderable;
 import app.entities.Reservation;
@@ -142,6 +143,7 @@ public class OrderBoundary extends Boundary {
     options.put(2, "Add new Item/Promo to Order");
     options.put(3, "Change quantity of Item/Promo in Order");
     options.put(4, "Remove an Item/Promo from Order");
+    options.put(5, "Make Payment and get Invoice for Order");
     options.put(9, "Exit - Back to Orders menu");
     ChoicePicker itemsPicker = new ChoicePicker("How do you want to manage " + order.getName() + "? ", options);
     while (choice != 9) {
@@ -158,6 +160,9 @@ public class OrderBoundary extends Boundary {
         break;
       case 4:
         askDeleteItemFromOrder(order);
+        break;
+      case 5:
+        makePayment(order);
         break;
       case 9:
         System.out.println("Going back to the Order menu ... ");
@@ -237,6 +242,16 @@ public class OrderBoundary extends Boundary {
     return quantity;
   }
 
+  private void makePayment(Order order) {
+    if (order.getInvoice() == null) {
+      order.getTable().setUnoccupied(order);
+      order.setInvoice(new Invoice(order));
+    } else {
+      System.out.println("Already make payment. Will just print the invoice ...");
+    }
+    order.printInvoice();
+  }
+
   @Override
   public void mainOptions() {
     int orderChoice;
@@ -246,7 +261,7 @@ public class OrderBoundary extends Boundary {
     options.put(1, "List all Orders");
     options.put(2, "Add new Order");
     options.put(3, "Remove an Order");
-    options.put(4, "Edit items in an Order");
+    options.put(4, "Manage a particular Order");
     options.put(9, "Exit - Back to main menu");
     ChoicePicker mainPicker = new ChoicePicker("This is the Orders menu, what would you like to do? ", options);
     while (choice != 9) {
