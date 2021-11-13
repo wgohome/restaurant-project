@@ -37,7 +37,7 @@ public class RestaurantApp {
     options.put(2, "Promotional Sets");
     options.put(3, "Orders");
     options.put(4, "Reservations");
-    options.put(5, "Invoices");
+    options.put(5, "Get Sales Report");
     options.put(6, "Table Management");
     options.put(7, "Customer Management");
     options.put(8, "Staff Management");
@@ -60,7 +60,7 @@ public class RestaurantApp {
         resvBoundary.mainOptions();
         break;
       case 5:
-        System.out.println("Entering option 5");
+        System.out.println("Printing out sales report");
         break;
       case 6:
         tableBoundary.mainOptions();
