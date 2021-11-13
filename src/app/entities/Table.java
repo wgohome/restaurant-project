@@ -109,26 +109,22 @@ public class Table implements EntityStorable {
 
   @Override
   public String getDesc() {
-    return pax + " pax max";
+    return pax + " pax max, status: " + getBookedStatus();
   }
 
   @Override
   public String getAttrsString() {
-    String bookStatus = isFree() ?
-      "(unoccupied)":
-      getOccupiedBy().getName();
     return "Table ID: " + getId() +
       "\nCapacity (pax):" + getPax() +
-      "\nOccupied by: " + bookStatus;
+      "\nOccupied by: " + getBookedStatus();
   }
 
-  // public void bookTable(Bookable b) {
-  //   if (isOccupied()) {
-  //     System.out.println("Fail to book: " + getName() + " already booked for " + getBookerName() + "!");
-  //   } else {
-  //     setOccupied();
-  //     setBooker(b);
-  //     System.out.println(getName() + " is now booked for " + getBookerName());
-  //   }
-  // }
+  private String getBookedStatus() {
+    if (isFree())
+      return "(unoccupied)";
+    else if (getOccupiedBy() != null)
+      return getOccupiedBy().getName();
+    else
+      return "(has reservation in the next 2 hours)";
+  }
 }
