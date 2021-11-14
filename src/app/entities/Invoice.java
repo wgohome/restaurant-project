@@ -11,6 +11,7 @@ public class Invoice implements Serializable {
   private static final DateTimeFormatter DT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
   private static final StringAlign RIGHT_FORMATTER = new StringAlign(70, StringAlign.Justify.RIGHT);
   private static double DISCOUNT = 0.1;
+  private static double TAX_RATE = 0.07;
 
   private Order order;
   private LocalDateTime paidAt;
@@ -24,9 +25,9 @@ public class Invoice implements Serializable {
   public String getPaidAtString() { return paidAt.format(DT_FORMATTER) ; }
 
   public void printOrder() {
-    String priceString;
-    String discString;
-    double netTotal, discPrice, grandTotal;
+    /* TODO: Differentiate members vs non members */
+    String priceString, discString, taxString;
+    double netTotal, discPrice, taxes, grandTotal;
 
     System.out.println("\n===  Invoice  ===");
     System.out.println(order.getAttrsString());
@@ -43,14 +44,23 @@ public class Invoice implements Serializable {
     }
 
     netTotal = calcNetTotal();
-    // TODO: issue
-    discString = String.format("%.0f %%", DISCOUNT * 100);
-    discPrice = netTotal * DISCOUNT;
-    grandTotal = netTotal - discPrice;
+    taxString = String.format("%.0f %%", TAX_RATE * 100);
+    if (order.getCustomer().getMembership()) {
+      discString = String.format("%.0f %%", DISCOUNT * 100);
+      discPrice = netTotal * DISCOUNT;
+      taxes = (netTotal - discPrice) * TAX_RATE;
+      grandTotal = netTotal - discPrice - taxes;
+    } else {
+      discString = ""; discPrice = 0;
+      taxes = netTotal * TAX_RATE;
+      grandTotal = netTotal - taxes;
+    }
 
     System.out.println("");
     System.out.println("NET TOTAL: " + formatPriceString(netTotal));
-    System.out.println("DISCOUNT (" + discString + "): -(" + formatPriceString(discPrice) + ")");
+    if (order.getCustomer().getMembership())
+      System.out.println("DISCOUNT (" + discString + "): -" + formatPriceString(discPrice));
+    System.out.println("TAXES (" + taxString + "): +" + formatPriceString(taxes));
     System.out.println("GRAND TOTAL: " + formatPriceString(grandTotal));
   }
 

@@ -22,7 +22,9 @@ public class OrderController extends Controller {
 
   @Override
   protected void afterRemove(EntityStorable e) {
-    // TODO: Mark the table as paid. Can still keep link to the table but remove occupiedBy attribute in Table to free it.
+    // Mark the table as paid. Can still keep link to the table but remove occupiedBy attribute in Table to free it.
+    Order order = (Order) e;
+    order.getTable().setUnoccupied(order);
   }
 
   private void updateNextId() {

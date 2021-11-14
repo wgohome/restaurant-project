@@ -45,12 +45,8 @@ public class Table implements EntityStorable {
   }
 
   public List<Reservation> getReservations() { return reservations; }
-  public void addReservation(Reservation resv) {
-    if (reservations.add(resv))
-      System.out.println("Added " + resv.getName() + " to " + this.getName());
-  }
 
-  public void AddReservation(Reservation resv) {
+  public void addReservation(Reservation resv) {
     if (reservations.contains(resv))
       System.out.println(this.getName() + " already has " + resv.getName());
     else if (reservations.add(resv))
