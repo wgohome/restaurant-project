@@ -66,10 +66,11 @@ public class OrderBoundary extends Boundary {
       }
     }
     /* Set Table to be occupied by this Order */
-    if (order != null)
+    if (order != null) {
       order.getTable().setOccupiedBy(order);
-    /* Add orders */
-    askToManageOrder(order);
+      /* Add orders */
+      askToManageOrder(order);
+    }
     return order;
   }
 
@@ -111,12 +112,12 @@ public class OrderBoundary extends Boundary {
     options = new TreeMap<Integer, String>();
     options.put(1, "Yes, it is for an existing customer");
     options.put(2, "No, it is a new customer");
-    ChoicePicker picker = new ChoicePicker("Is reservation for an existing customer?", options);
+    ChoicePicker picker = new ChoicePicker("Is this Order for an existing customer?", options);
     choice = picker.run();
     if (choice == 1) {
       /* Pick from existing Customers */
       options = cusBoundary.getChoiceMap();
-      ChoicePicker cusPicker = new ChoicePicker("Which customer is this reservation for?", options);
+      ChoicePicker cusPicker = new ChoicePicker("Which customer is this Order for?", options);
       choice = cusPicker.run();
       customer = (Customer) cusBoundary.getEntity(choice - 1);
     } else {
