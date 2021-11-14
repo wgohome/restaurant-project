@@ -25,7 +25,6 @@ public class Invoice implements Serializable {
   public String getPaidAtString() { return paidAt.format(DT_FORMATTER) ; }
 
   public void printOrder() {
-    /* TODO: Differentiate members vs non members */
     String priceString, discString, taxString;
     double netTotal, discPrice, taxes, grandTotal;
 
@@ -49,11 +48,11 @@ public class Invoice implements Serializable {
       discString = String.format("%.0f %%", DISCOUNT * 100);
       discPrice = netTotal * DISCOUNT;
       taxes = (netTotal - discPrice) * TAX_RATE;
-      grandTotal = netTotal - discPrice - taxes;
+      grandTotal = netTotal - discPrice + taxes;
     } else {
       discString = ""; discPrice = 0;
       taxes = netTotal * TAX_RATE;
-      grandTotal = netTotal - taxes;
+      grandTotal = netTotal + taxes;
     }
 
     System.out.println("");
@@ -80,6 +79,14 @@ public class Invoice implements Serializable {
 
   private String formatPriceString(double price) {
     return String.format("$ %.2f", price);
+  }
+
+  public double calcGrandTotal() {
+    if (order.getCustomer().getMembership()) {
+      return calcNetTotal() * (1 - DISCOUNT) * (1 - TAX_RATE);
+    } else {
+      return calcNetTotal() * (1 - TAX_RATE);
+    }
   }
 }
 

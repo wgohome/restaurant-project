@@ -1,7 +1,9 @@
 package app.controllers;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import app.entities.Order;
 import app.interfaces.EntityStorable;
@@ -34,5 +36,18 @@ public class OrderController extends Controller {
         Order.setNextId(order.getId() + 1);
       }
     }
+  }
+
+  /* Get selected orders for revenue report */
+  public List<Order> getOrdersByTime(LocalDate leftCut, LocalDate rightCut) {
+    /* Collects Orders whose order start Date is within the leftCut and RightCut dates */
+    List<Order> orders = getList().stream()
+      .map((e) -> (Order) e)
+      .filter((order) -> {
+        return order.getStart().toLocalDate().isAfter(leftCut) &&
+          order.getStart().toLocalDate().isBefore(rightCut);
+      })
+      .collect(Collectors.toList());
+    return orders;
   }
 }
